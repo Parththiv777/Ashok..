@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Flowers & Hearts</title>
+  <style>
+    html,body{height:100%;margin:0}
+    body{
+      background:#efe2e2;
+      overflow:hidden;
+      position:relative;
+    }
+    .icon{position:absolute;pointer-events:none;will-change:transform,opacity}
+    @keyframes floaty{0%{transform:translateY(0) rotate(0)}50%{transform:translateY(-8px) rotate(6deg)}100%{transform:translateY(0) rotate(0)}}
+    .falling-flower{position:absolute;top:-50px;pointer-events:none;z-index:1;font-size:30px;animation:fall linear;opacity:0.8}
+    @keyframes fall{0%{transform:translateY(0) rotate(0deg);opacity:0.8}100%{transform:translateY(110vh) rotate(360deg);opacity:0.3}}
+    .rising-heart{position:absolute;bottom:-50px;pointer-events:none;z-index:1;font-size:30px;animation:rise linear;opacity:0.8}
+    @keyframes rise{0%{transform:translateY(0) rotate(0deg);opacity:0.8}100%{transform:translateY(-110vh) rotate(-360deg);opacity:0.3}}
+    .center-message{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:60;font-family: 'Forte', Georgia, serif;font-size:48px;color:#da2080;text-align:center;padding:12px 20px;background:rgba(252, 250, 250, 0.18);border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,0.25)}
+    .love-button{position:absolute;left:50%;top:66%;transform:translate(-50%,-50%);z-index:60;padding:12px 28px;font-size:18px;font-weight:600;background:#d697c9;color:#a13a6e;border:none;border-radius:8px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.15);transition:all 0.3s ease}
+    .love-button:hover{background:#c063a2;transform:translate(-50%,-50%) scale(1.05)}
+    .love-button:active{transform:translate(-50%,-50%) scale(0.98)}
+  </style>
+</head>
+<body>
+  <div class="center-message">I LOVE YOU 🖤🖤</div>
+  <button class="love-button" id="loveBtn">LOVE U TOO💕💗</button>
+  <font></French Script MT>
+  <script>
+    (function(){
+      const count = 90;
+      const rand = (min,max)=>Math.random()*(max-min)+min;
+      const heartSVG = size=>`<svg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' width='${size}' height='${size}'><path fill='%23ff4d88' d='M12 21s-7.5-4.87-9.33-7.02C.93 11.73 2 7.5 5.5 6.25 7.23 5.63 9.1 6.08 10 7.5c.9-1.42 2.77-1.87 4.5-1.25C18 7.5 19.07 11.73 21.33 13.98 19.5 16.13 12 21 12 21z'/></svg>`;
+      const flowerSVG = size=>`<svg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' width='${size}' height='${size}'><path fill='%23ffb3d1' d='M12 2c1.1 0 2 .9 2 2 0 .6-.3 1.1-.7 1.5.9.4 1.6 1.2 1.9 2.2.4-.1.8-.2 1.2-.2 1.1 0 2 .9 2 2 0 .4-.1.8-.3 1.2.7.6 1.1 1.5 1.1 2.5 0 1.1-.9 2-2 2-.9 0-1.7-.5-2.1-1.2-.6.4-1.3.7-2.1.7-1.1 0-2-.9-2-2 0-.7.4-1.3 1-1.7C9.8 13 8.8 11.9 8.8 10.6 8.8 9.5 9.7 8.6 10.8 8.6c.4 0 .8.1 1.1.3.6-.8 1.6-1.3 2.6-1.3 0 0 0 0 0 0C13 6 12.6 4 12 2z'/></svg>`;
+
+      for(let i=0;i<count;i++){
+        const el = document.createElement('div');
+        el.className='icon';
+        const size = Math.floor(rand(10,30));
+        const isHeart = Math.random() < 0.6;
+        el.innerHTML = isHeart ? heartSVG(size) : flowerSVG(size);
+        const left = rand(-5,105);
+        const top = rand(-5,105);
+        el.style.left = left + '%';
+        el.style.top = top + '%';
+        el.style.width = size + 'px';
+        el.style.height = size + 'px';
+        el.style.opacity = rand(0.7,1).toFixed(2);
+        el.style.transformOrigin = 'center';
+        el.style.animation = `floaty ${rand(3,6).toFixed(2)}s ease-in-out ${rand(0,2).toFixed(2)}s infinite`;
+        document.body.appendChild(el);
+      }
+      
+      // Falling flowers animation
+      const flowers = ['🌹', '🌺', '🌸', '🌷', '🌼', '🌻', '🏵️', '🍀', '💐'];
+      
+      function createFallingFlower() {
+        const flower = document.createElement('div');
+        flower.className = 'falling-flower';
+        flower.innerHTML = flowers[Math.floor(Math.random() * flowers.length)];
+        flower.style.left = Math.random() * 100 + '%';
+        flower.style.fontSize = (Math.random() * 20 + 20) + 'px';
+        flower.style.animationDuration = (Math.random() * 3 + 4) + 's';
+        document.body.appendChild(flower);
+        
+        setTimeout(() => {
+          flower.remove();
+        }, 7000);
+      }
+      
+      // Create initial falling flowers
+      for(let i = 0; i < 15; i++) {
+        setTimeout(() => createFallingFlower(), i * 300);
+      }
+      
+      // Continuously create falling flowers
+      setInterval(createFallingFlower, 500);
+      
+      // Rising hearts animation
+      const hearts = ['❤️', '💕', '💖', '💗', '💓', '💝', '💞', '💘', '💟'];
+      
+      function createRisingHeart() {
+        const heart = document.createElement('div');
+        heart.className = 'rising-heart';
+        heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+        heart.style.left = Math.random() * 100 + '%';
+        heart.style.fontSize = (Math.random() * 20 + 25) + 'px';
+        heart.style.animationDuration = (Math.random() * 3 + 5) + 's';
+        document.body.appendChild(heart);
+        
+        setTimeout(() => {
+          heart.remove();
+        }, 8000);
+      }
+      
+      // Create initial rising hearts
+      for(let i = 0; i < 15; i++) {
+        setTimeout(() => createRisingHeart(), i * 250);
+      }
+      
+      // Continuously create rising hearts
+      setInterval(createRisingHeart, 500);
+    })();
+    document.getElementById('loveBtn').addEventListener('click', function(){
+      window.location.href = 'love-response.html';
+    });
+  </script>
+</body>
+</html>
