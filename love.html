@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>Light Pink Page</title>
+	<link rel="stylesheet" href="ask.css">
+	<style>
+		html,body{height:100%}
+		body{
+			margin:0;
+			padding:20px;
+			min-height:100vh;
+			background-image: url('https://i.pinimg.com/originals/d1/9a/ad/d19aad459380f0e93333d03cf122ee55.gif');
+			background-size: cover;
+			background-attachment: fixed;
+			background-position: center;
+			display:flex;
+			align-items:center;
+			justify-content:center;
+			font-family: "Segoe UI", Roboto, Arial, sans-serif;
+			color:#6b2742;
+		}
+		.card{
+			background: rgba(255,255,255,0.92);
+			border-radius:20px;
+			box-shadow:0 8px 32px rgb(224, 181, 210);
+			padding:2rem 3rem;
+			border-radius:12px;
+			box-shadow: 0 6px 20px rgba(10, 9, 9, 0.08);
+			text-align:center;
+			width:100%;
+			max-width:520px;
+			box-sizing:border-box;
+			position:relative;
+			overflow:visible;
+		}
+		/* decorative icons inside card */
+		.icon-row{display:flex;gap:0.6rem;justify-content:center;margin-bottom:0.6rem}
+		.icon{width:42px;height:42px;display:inline-block}
+		.icon svg{width:100%;height:100%}
+		@keyframes floaty{0%{transform:translateY(0)}50%{transform:translateY(-6px)}100%{transform:translateY(0)}}
+		.icon.heart{animation:floaty 3s ease-in-out infinite}
+		.icon.flower{animation:floaty 3.5s ease-in-out infinite}
+		.enter{
+			margin-top:0.75rem;
+			padding:0.6rem 1.2rem;
+			border-radius:8px;
+			border:0;
+			background:#ec3ba5;
+			color:#302e2f;
+			font-weight:600;
+			cursor:pointer;
+			box-shadow:0 6px 12px rgb(218, 142, 180);
+		}
+		.enter:active{transform:translateY(1px)}
+		/* secret overlay centered (not used now) */
+		.secret{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%) scale(0.98);opacity:0;pointer-events:none;transition:opacity 200ms ease, transform 200ms ease;z-index:60}
+		.secret.visible{opacity:1;transform:translate(-50%,-50%) scale(1);pointer-events:auto}
+		h1{margin:0 0 0.5rem;font-size:2rem}
+		p{margin:0;color:#d486bb}
+
+		/* calendar image (replaces full calendar UI) */
+		.calendar-icon{position:fixed;right:18px;top:18px;width:96px;height:96px;display:flex;align-items:center;justify-content:center}
+		.calendar-icon img{width:100%;height:100%;display:block;border-radius:12px;object-fit:cover}
+		/* top corner hearts */
+		.top-hearts{position:fixed;top:18px;display:flex;gap:0.4rem;align-items:center;z-index:40}
+		.top-left{left:18px}
+		.top-right{right:18px}
+		.top-hearts .heart{width:40px;height:40px}
+		.top-hearts .heart svg{width:100%;height:100%}
+
+		.bottom-image{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);max-width:300px;width:100%;display:flex;justify-content:center}
+		.bottom-image img{max-width:100%;height:auto;border-radius:8px}
+		.bottom-left{position:fixed;bottom:20px;left:20px;max-width:200px;display:flex;align-items:flex-end}
+		.bottom-left img{max-width:100%;height:auto;border-radius:8px}
+		.bottom-right{position:fixed;bottom:20px;right:20px;max-width:200px;display:flex;align-items:flex-end}
+		.bottom-right img{max-width:100%;height:auto;border-radius:8px}
+		
+		/* Flower bouquets */
+		.bouquet{position:fixed;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:8px;z-index:50}
+		.bouquet-left{left:20px}
+		.bouquet-right{right:20px;align-items:flex-end}
+		.bouquet .flower-item{font-size:40px;animation:bouquetFloat 3s ease-in-out infinite;opacity:0.9}
+		.bouquet .flower-item:nth-child(1){animation-delay:0s}
+		.bouquet .flower-item:nth-child(2){animation-delay:0.3s}
+		.bouquet .flower-item:nth-child(3){animation-delay:0.6s}
+		.bouquet .flower-item:nth-child(4){animation-delay:0.9s}
+		.bouquet .flower-item:nth-child(5){animation-delay:1.2s}
+		@keyframes bouquetFloat{0%{transform:translateY(0) rotate(-5deg) scale(1)}50%{transform:translateY(-10px) rotate(5deg) scale(1.1)}100%{transform:translateY(0) rotate(-5deg) scale(1)}}
+		
+		/* Big realistic bouquets at bottom */
+		.big-bouquet{position:fixed;bottom:10px;width:200px;height:280px;z-index:5;animation:gentleSway 4s ease-in-out infinite}
+		.big-bouquet-left{left:10px}
+		.big-bouquet-right{right:10px;transform:scaleX(-1)}
+		@keyframes gentleSway{0%{transform:rotate(0deg) translateY(0)}25%{transform:rotate(-2deg) translateY(-5px)}75%{transform:rotate(2deg) translateY(-5px)}100%{transform:rotate(0deg) translateY(0)}}
+		.big-bouquet-right{animation:gentleSwayRight 4s ease-in-out infinite}
+		@keyframes gentleSwayRight{0%{transform:scaleX(-1) rotate(0deg) translateY(0)}25%{transform:scaleX(-1) rotate(-2deg) translateY(-5px)}75%{transform:scaleX(-1) rotate(2deg) translateY(-5px)}100%{transform:scaleX(-1) rotate(0deg) translateY(0)}}
+		
+		/* Falling flowers and hearts animation */
+		.falling-item{position:fixed;top:-50px;font-size:2rem;opacity:0.8;pointer-events:none;z-index:1;animation:fall linear forwards}
+		@keyframes fall{0%{transform:translateY(0) rotate(0deg);opacity:0.8}100%{transform:translateY(100vh) rotate(360deg);opacity:0}}
+	</style>
+</head>
+<body>
+	
+	<!-- Left side flower bouquet -->
+	<div class="bouquet bouquet-left" aria-hidden="true">
+		<div class="flower-item">🌹</div>
+		<div class="flower-item">🌺</div>
+		<div class="flower-item">🌸</div>
+		<div class="flower-item">🌷</div>
+		<div class="flower-item">🌼</div>
+	</div>
+	
+	<!-- Right side flower bouquet -->
+	<div class="bouquet bouquet-right" aria-hidden="true">
+		<div class="flower-item">🏵️</div>
+		<div class="flower-item">🌻</div>
+		<div class="flower-item">🌹</div>
+		<div class="flower-item">💐</div>
+		<div class="flower-item">🌺</div>
+	</div>
+	
+	<!-- Big realistic bouquet bottom left -->
+	<div class="big-bouquet big-bouquet-left" aria-hidden="true">
+		<svg viewBox="0 0 200 280" xmlns="http://www.w3.org/2000/svg">
+			<!-- Stems -->
+			<g>
+				<line x1="100" y1="280" x2="85" y2="100" stroke="#2d5016" stroke-width="4" opacity="0.8"/>
+				<line x1="100" y1="280" x2="100" y2="80" stroke="#2d5016" stroke-width="5" opacity="0.8"/>
+				<line x1="100" y1="280" x2="115" y2="90" stroke="#2d5016" stroke-width="4" opacity="0.8"/>
+				<line x1="100" y1="280" x2="70" y2="120" stroke="#2d5016" stroke-width="3" opacity="0.8"/>
+				<line x1="100" y1="280" x2="130" y2="110" stroke="#2d5016" stroke-width="3" opacity="0.8"/>
+			</g>
+			
+			<!-- Leaves -->
+			<ellipse cx="75" cy="180" rx="15" ry="25" fill="#4a7c28" opacity="0.7" transform="rotate(-30 75 180)"/>
+			<ellipse cx="125" cy="170" rx="15" ry="25" fill="#4a7c28" opacity="0.7" transform="rotate(30 125 170)"/>
+			<ellipse cx="90" cy="200" rx="12" ry="20" fill="#4a7c28" opacity="0.7" transform="rotate(-45 90 200)"/>
+			
+			<!-- Rose 1 (red) -->
+			<circle cx="100" cy="80" r="20" fill="#dc143c"/>
+			<circle cx="100" cy="80" r="15" fill="#ff1744"/>
+			<circle cx="100" cy="80" r="10" fill="#ff4569"/>
+			<circle cx="98" cy="78" r="6" fill="#c41230"/>
+			
+			<!-- Rose 2 (pink) -->
+			<circle cx="70" cy="120" r="18" fill="#ff69b4"/>
+			<circle cx="70" cy="120" r="13" fill="#ff85c1"/>
+			<circle cx="70" cy="120" r="8" fill="#ffa0d2"/>
+			<circle cx="68" cy="118" r="5" fill="#ff4d9e"/>
+			
+			<!-- Tulip (purple) -->
+			<ellipse cx="85" cy="100" rx="14" ry="20" fill="#9b59b6" transform="rotate(-10 85 100)"/>
+			<ellipse cx="90" cy="100" rx="14" ry="20" fill="#a67bc0"/>
+			<ellipse cx="95" cy="100" rx="14" ry="20" fill="#9b59b6" transform="rotate(10 95 100)"/>
+			
+			<!-- Sunflower -->
+			<circle cx="115" cy="90" r="12" fill="#ffd700"/>
+			<circle cx="110" cy="85" r="8" fill="#ffed4e"/>
+			<circle cx="120" cy="85" r="8" fill="#ffed4e"/>
+			<circle cx="110" cy="95" r="8" fill="#ffed4e"/>
+			<circle cx="120" cy="95" r="8" fill="#ffed4e"/>
+			<circle cx="115" cy="90" r="8" fill="#8b4513"/>
+			
+			<!-- Pink Peony -->
+			<circle cx="130" cy="110" r="16" fill="#ffb6c1"/>
+			<circle cx="125" cy="107" r="10" fill="#ffc9d4"/>
+			<circle cx="135" cy="107" r="10" fill="#ffc9d4"/>
+			<circle cx="130" cy="115" r="10" fill="#ffc9d4"/>
+			<circle cx="130" cy="110" r="8" fill="#ff9eb5"/>
+			
+			<!-- Small filler flowers -->
+			<circle cx="60" cy="140" r="6" fill="#fff"/>
+			<circle cx="140" cy="130" r="6" fill="#fff"/>
+			<circle cx="105" cy="125" r="5" fill="#e6e6fa"/>
+		</svg>
+	</div>
+	
+	<!-- Big realistic bouquet bottom right -->
+	<div class="big-bouquet big-bouquet-right" aria-hidden="true">
+		<svg viewBox="0 0 200 280" xmlns="http://www.w3.org/2000/svg">
+			<!-- Stems -->
+			<g>
+				<line x1="100" y1="280" x2="85" y2="100" stroke="#2d5016" stroke-width="4" opacity="0.8"/>
+				<line x1="100" y1="280" x2="100" y2="80" stroke="#2d5016" stroke-width="5" opacity="0.8"/>
+				<line x1="100" y1="280" x2="115" y2="90" stroke="#2d5016" stroke-width="4" opacity="0.8"/>
+				<line x1="100" y1="280" x2="70" y2="120" stroke="#2d5016" stroke-width="3" opacity="0.8"/>
+				<line x1="100" y1="280" x2="130" y2="110" stroke="#2d5016" stroke-width="3" opacity="0.8"/>
+			</g>
+			
+			<!-- Leaves -->
+			<ellipse cx="75" cy="180" rx="15" ry="25" fill="#4a7c28" opacity="0.7" transform="rotate(-30 75 180)"/>
+			<ellipse cx="125" cy="170" rx="15" ry="25" fill="#4a7c28" opacity="0.7" transform="rotate(30 125 170)"/>
+			<ellipse cx="90" cy="200" rx="12" ry="20" fill="#4a7c28" opacity="0.7" transform="rotate(-45 90 200)"/>
+			
+			<!-- Rose 1 (deep red) -->
+			<circle cx="100" cy="80" r="20" fill="#8b0000"/>
+			<circle cx="100" cy="80" r="15" fill="#dc143c"/>
+			<circle cx="100" cy="80" r="10" fill="#ff1744"/>
+			<circle cx="98" cy="78" r="6" fill="#660000"/>
+			
+			<!-- Rose 2 (coral pink) -->
+			<circle cx="70" cy="120" r="18" fill="#ff7f7f"/>
+			<circle cx="70" cy="120" r="13" fill="#ff9999"/>
+			<circle cx="70" cy="120" r="8" fill="#ffb3b3"/>
+			<circle cx="68" cy="118" r="5" fill="#ff6666"/>
+			
+			<!-- Lily (white/pink) -->
+			<ellipse cx="85" cy="100" rx="14" ry="22" fill="#fff0f5" transform="rotate(-15 85 100)"/>
+			<ellipse cx="92" cy="100" rx="14" ry="22" fill="#ffe4e1"/>
+			<ellipse cx="99" cy="100" rx="14" ry="22" fill="#fff0f5" transform="rotate(15 99 100)"/>
+			<circle cx="92" cy="105" r="3" fill="#ffc0cb"/>
+			
+			<!-- Orange Rose -->
+			<circle cx="115" cy="90" r="18" fill="#ff6347"/>
+			<circle cx="115" cy="90" r="13" fill="#ff7f50"/>
+			<circle cx="115" cy="90" r="8" fill="#ffa07a"/>
+			<circle cx="113" cy="88" r="5" fill="#ff4500"/>
+			
+			<!-- Purple Orchid -->
+			<circle cx="130" cy="110" r="16" fill="#da70d6"/>
+			<circle cx="125" cy="107" r="10" fill="#ee82ee"/>
+			<circle cx="135" cy="107" r="10" fill="#ee82ee"/>
+			<circle cx="130" cy="115" r="10" fill="#ee82ee"/>
+			<circle cx="130" cy="110" r="7" fill="#ba55d3"/>
+			
+			<!-- Small filler flowers -->
+			<circle cx="60" cy="140" r="6" fill="#fffacd"/>
+			<circle cx="140" cy="130" r="6" fill="#fffacd"/>
+			<circle cx="105" cy="125" r="5" fill="#ffb6c1"/>
+		</svg>
+	</div>
+
+	<!-- top-right calendar image (uses calendar.svg) -->
+	<div id="calendarIcon" class="calendar-icon" aria-hidden="true" title="Valentine">
+		<img src="calendar.svg" alt="calendar">
+	</div>
+
+	<!-- Top-left hearts -->
+	<div class="top-hearts top-left" aria-hidden="true">
+		<span class="icon heart" title="heart">
+			<svg viewBox="0 0 24 24" fill="#ff4d88" xmlns="http://www.w3.org/2000/svg"><path d="M12 21s-7.5-4.87-9.33-7.02C.93 11.73 2 7.5 5.5 6.25 7.23 5.63 9.1 6.08 10 7.5c.9-1.42 2.77-1.87 4.5-1.25C18 7.5 19.07 11.73 21.33 13.98 19.5 16.13 12 21 12 21z"/></svg>
+		</span>
+		<span class="icon heart" title="heart">
+			<svg viewBox="0 0 24 24" fill="#ff6ea1" xmlns="http://www.w3.org/2000/svg"><path d="M12 21s-7.5-4.87-9.33-7.02C.93 11.73 2 7.5 5.5 6.25 7.23 5.63 9.1 6.08 10 7.5c.9-1.42 2.77-1.87 4.5-1.25C18 7.5 19.07 11.73 21.33 13.98 19.5 16.13 12 21 12 21z"/></svg>
+		</span>
+	</div>
+
+
+	<!-- Top-right hearts -->
+	<div class="top-hearts top-right" aria-hidden="true">
+		<span class="icon heart" title="heart">
+			<svg viewBox="0 0 24 24" fill="#ffb3d1" xmlns="http://www.w3.org/2000/svg"><path d="M12 21s-7.5-4.87-9.33-7.02C.93 11.73 2 7.5 5.5 6.25 7.23 5.63 9.1 6.08 10 7.5c.9-1.42 2.77-1.87 4.5-1.25C18 7.5 19.07 11.73 21.33 13.98 19.5 16.13 12 21 12 21z"/></svg>
+		</span>
+		<span class="icon heart" title="heart">
+			<svg viewBox="0 0 24 24" fill="#ff6ea1" xmlns="http://www.w3.org/2000/svg"><path d="M12 21s-7.5-4.87-9.33-7.02C.93 11.73 2 7.5 5.5 6.25 7.23 5.63 9.1 6.08 10 7.5c.9-1.42 2.77-1.87 4.5-1.25C18 7.5 19.07 11.73 21.33 13.98 19.5 16.13 12 21 12 21z"/></svg>
+		</span>
+	</div>
+
+	<div class="card">
+		<div class="icon-row" aria-hidden="true">
+			<span class="icon heart" title="heart">
+				<svg viewBox="0 0 24 24" fill="#ff4d88" xmlns="http://www.w3.org/2000/svg"><path d="M12 21s-7.5-4.87-9.33-7.02C.93 11.73 2 7.5 5.5 6.25 7.23 5.63 9.1 6.08 10 7.5c.9-1.42 2.77-1.87 4.5-1.25C18 7.5 19.07 11.73 21.33 13.98 19.5 16.13 12 21 12 21z"/></svg>
+			</span>
+			<span class="icon flower" title="flower">
+				<svg viewBox="0 0 24 24" fill="#ffb3d1" xmlns="http://www.w3.org/2000/svg"><path d="M12 2c1.1 0 2 .9 2 2 0 .6-.3 1.1-.7 1.5.9.4 1.6 1.2 1.9 2.2.4-.1.8-.2 1.2-.2 1.1 0 2 .9 2 2 0 .4-.1.8-.3 1.2.7.6 1.1 1.5 1.1 2.5 0 1.1-.9 2-2 2-.9 0-1.7-.5-2.1-1.2-.6.4-1.3.7-2.1.7-1.1 0-2-.9-2-2 0-.7.4-1.3 1-1.7C9.8 13 8.8 11.9 8.8 10.6 8.8 9.5 9.7 8.6 10.8 8.6c.4 0 .8.1 1.1.3.6-.8 1.6-1.3 2.6-1.3 0 0 0 0 0 0C13 6 12.6 4 12 2z"/></svg>
+			</span>
+			<span class="icon heart" title="heart">
+				<svg viewBox="0 0 24 24" fill="#ff6ea1" xmlns="http://www.w3.org/2000/svg"><path d="M12 21s-7.5-4.87-9.33-7.02C.93 11.73 2 7.5 5.5 6.25 7.23 5.63 9.1 6.08 10 7.5c.9-1.42 2.77-1.87 4.5-1.25C18 7.5 19.07 11.73 21.33 13.98 19.5 16.13 12 21 12 21z"/></svg>
+			</span>
+		</div>
+		<h1>Will you be my Valentine?</h1>
+		<button id="yesBtn" class="enter" style="font: Forte;">YES OF COURSE</button>
+		<button id="noBtn" class="enter" style="background:#f1a1d4;color:#1a191a;margin-left:0.6rem">NO THANK YOU</button>
+		<p></p>
+	</div>
+
+	<!-- Bottom center image -->
+	<div class="bottom-image">
+		<img src="https://i.pinimg.com/originals/02/86/d2/0286d2d14e7d5c55ea4fc64da3a7ec87.gif" alt="decorative image">
+	</div>
+	<script>
+		// calendar rendering removed — replaced by a static inline SVG icon
+
+		document.getElementById('yesBtn').addEventListener('click', function(){
+			window.location.href = 'second.html';
+
+		});
+		document.getElementById('noBtn').addEventListener('click', function(){
+			window.location.href = 'no.html';
+		});
+		
+		// Falling flowers and hearts animation
+		const symbols = ['❤️', '💕', '💖', '💗', '💓', '💝', '🌸', '🌺', '🌹', '🌷', '🌼', '🏵️', '🌻', '💐'];
+		
+		function createFallingItem() {
+			const item = document.createElement('div');
+			item.className = 'falling-item';
+			item.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+			item.style.left = Math.random() * 100 + '%';
+			
+			const duration = Math.random() * 4 + 5; // 5-9 seconds
+			item.style.animationDuration = duration + 's';
+			
+			document.body.appendChild(item);
+			
+			setTimeout(() => {
+				item.remove();
+			}, duration * 1000);
+		}
+		
+		// Create initial batch
+		for(let i = 0; i < 20; i++) {
+			setTimeout(() => createFallingItem(), i * 200);
+		}
+		
+		// Continuously create new falling items
+		setInterval(createFallingItem, 500);
+	</script>
+</body>
+</html>
