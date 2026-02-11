@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>Love Response</title>
+	<style>
+		html,body{height:100%;margin:0;padding:0;overflow:hidden}
+		body{
+			background-image:url('https://i.pinimg.com/originals/33/33/01/333301b9feeaef77ce4564bf3bd27d03.gif');
+			background-size:cover;
+			background-position:center;
+			background-attachment:fixed;
+			background-repeat:no-repeat;
+			display:flex;
+			align-items:center;
+			justify-content:center;
+			font-family: "Segoe UI", Roboto, Arial, sans-serif;
+			color:#000000;
+		}
+		.container{
+			text-align:center;
+			padding:40px;
+			background:rgba(255, 255, 255, 0.95);
+			border-radius:20px;
+			box-shadow:0 8px 32px rgba(209, 101, 184, 0.2);
+		}
+		h1{
+			font-size:56px;
+			margin:0 0 1rem;
+			font-family: 'Forte', Georgia, serif;
+		}
+		p{
+			font-size:24px;
+			margin:0 0 2rem;
+		}
+		.back-btn{
+			padding:10px 20px;
+			background:#161616;
+			color:#ffffff;
+			border:none;
+			border-radius:8px;
+			font-size:16px;
+			font-weight:600;
+			cursor:pointer;
+			box-shadow:0 4px 12px rgba(0,0,0,0.15);
+			transition:all 0.3s ease;
+		}
+		.back-btn:hover{
+			background:#000000;
+			transform:scale(1.05);
+		}
+		.back-btn:active{
+			transform:scale(0.98);
+		}
+		/* Flying butterflies animation */
+		.butterfly{position:fixed;pointer-events:none;z-index:1;font-size:2rem;animation:fly ease-in-out infinite}
+		@keyframes fly{0%{transform:translate(0, 0) rotate(0deg) scale(1)}25%{transform:translate(30px, -20px) rotate(10deg) scale(1.1)}50%{transform:translate(60px, 0px) rotate(-5deg) scale(1)}75%{transform:translate(30px, 20px) rotate(-10deg) scale(1.1)}100%{transform:translate(0, 0) rotate(0deg) scale(1)}}
+		/* Black hearts animation */
+		.black-heart{position:fixed;pointer-events:none;z-index:1;font-size:2rem;animation:float-heart ease-in-out infinite}
+		@keyframes float-heart{0%{transform:translateY(0) scale(1)}50%{transform:translateY(-30px) scale(1.2)}100%{transform:translateY(0) scale(1)}}
+		.top-image{position:fixed;top:12%;left:50%;transform:translateX(-50%);width:160px;max-width:40vw;z-index:5}
+		.top-image img{width:100%;height:auto;display:block;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,0.2)}
+	</style>
+</head>
+<body>
+	<div class="top-image" aria-hidden="true">
+		<img src="https://i.pinimg.com/originals/c1/29/ce/c129ce466b40afde884db0ba7a505fd2.gif" alt="">
+	</div>
+	<div class="container">
+		<h1>💕 I Love You Too 💕</h1>
+		<h2>You make my heart so happy! 💝😍</h2>
+		<button class="back-btn" onclick="window.location.href='gift.html'" > </a>Click here !!!</button>
+	</div>
+	
+	<script>
+		// Butterflies animation
+		const butterflies = ['🦋', '🦋'];
+		const blackHearts = ['🖤', '🖤'];
+		
+		function createButterfly() {
+			const butterfly = document.createElement('div');
+			butterfly.className = 'butterfly';
+			butterfly.textContent = butterflies[Math.floor(Math.random() * butterflies.length)];
+			butterfly.style.left = Math.random() * 100 + '%';
+			butterfly.style.top = Math.random() * 100 + '%';
+			butterfly.style.animationDuration = (Math.random() * 3 + 4) + 's';
+			butterfly.style.animationDelay = Math.random() * 2 + 's';
+			butterfly.style.opacity = Math.random() * 0.4 + 0.6;
+			document.body.appendChild(butterfly);
+		}
+		
+		function createBlackHeart() {
+			const heart = document.createElement('div');
+			heart.className = 'black-heart';
+			heart.textContent = blackHearts[Math.floor(Math.random() * blackHearts.length)];
+			heart.style.left = Math.random() * 100 + '%';
+			heart.style.top = Math.random() * 100 + '%';
+			heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
+			heart.style.animationDelay = Math.random() * 2 + 's';
+			heart.style.opacity = Math.random() * 0.3 + 0.5;
+			document.body.appendChild(heart);
+		}
+		
+		// Create butterflies
+		for(let i = 0; i < 12; i++) {
+			setTimeout(() => createButterfly(), i * 400);
+		}
+		
+		// Create black hearts
+		for(let i = 0; i < 15; i++) {
+			setTimeout(() => createBlackHeart(), i * 350);
+		}
+	</script>
+</body>
+</html>
